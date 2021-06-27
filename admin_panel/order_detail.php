@@ -10,15 +10,6 @@ if (empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])) {
 if ($_SESSION['role'] != 1) {
     header('Location: login.php');
 }
-
-//if ($_POST['search']) {
-//  setcookie('search',$_POST['search'], time() + (86400 * 30), "/");
-//}else{
-//  if (empty($_GET['pageno'])) {
-//    unset($_COOKIE['search']);
-//    setcookie('search', null, -1, '/');
-//  }
-//}
 ?>
 
 
@@ -30,7 +21,7 @@ if ($_SESSION['role'] != 1) {
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Category Listings</h3>
+                        <h3 class="card-title">Order Details</h3>
                     </div>
                     <?php
                     if (!empty($_GET['pageno'])) {
@@ -42,44 +33,31 @@ if ($_SESSION['role'] != 1) {
                     $numOfrecs = 5;
                     $offset = ($pageno - 1) * $numOfrecs;
 
-                    if (empty($_POST['search']) && empty($_COOKIE['search'])) {
-                        $stmt = $pdo->prepare("SELECT * FROM categories ORDER BY id DESC");
-                        $stmt->execute();
-                        $rawResult = $stmt->fetchAll();
+                    $stmt = $pdo->prepare("SELECT * FROM sale_orders_detail ORDER BY id DESC");
+                    $stmt->execute();
+                    $rawResult = $stmt->fetchAll();
 
-                        $total_pages = ceil(count($rawResult) / $numOfrecs);
+                    $total_pages = ceil(count($rawResult) / $numOfrecs);
 
-                        $stmt = $pdo->prepare("SELECT * FROM categories ORDER BY id DESC LIMIT $offset,$numOfrecs");
-                        $stmt->execute();
-                        $result = $stmt->fetchAll();
-                    }else{
-                        $searchKey = $_POST['search'] ? $_POST['search'] : $_COOKIE['search'];
-                        $stmt = $pdo->prepare("SELECT * FROM categories WHERE name LIKE '%$searchKey%' ORDER BY id DESC");
-                        $stmt->execute();
-                        $rawResult = $stmt->fetchAll();
-
-                        $total_pages = ceil(count($rawResult) / $numOfrecs);
-
-                        $stmt = $pdo->prepare("SELECT * FROM categories WHERE name LIKE '%$searchKey%' ORDER BY id DESC LIMIT $offset,$numOfrecs");
-                        $stmt->execute();
-                        $result = $stmt->fetchAll();
-                    }
+                    $stmt = $pdo->prepare("SELECT * FROM sale_orders_detail ORDER BY id LIMIT $offset,$numOfrecs");
+                    $stmt->execute();
+                    $result = $stmt->fetchAll();
 
                     ?>
                     <!-- /.card-header -->
                     <div class="card-body">
                         <div>
-                            <a href="category_add.php" type="button" class="btn btn-success">New Category</a>
+                            <a href="order_list.php" type="button" class="btn btn-success">View Orders</a>
                         </div>
                         <br>
                         <table class="table table-bordered">
                             <thead>
                             <tr>
                                 <th style="width: 10px">#</th>
-                                <th>Name</th>
-                                <th>Description</th>
-<!--                                <th>Action</th>-->
-                                <th style="width: 40px">Actions</th>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Order Date</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -89,20 +67,15 @@ if ($_SESSION['role'] != 1) {
                                 foreach ($result as $value) { ?>
                                     <tr>
                                         <td><?php echo $i;?></td>
-                                        <td><?php echo escape($value['name'])?></td>
-                                        <td><?php echo escape(substr($value['description'],0,50))?></td>
-                                        <td>
-                                            <div class="btn-group">
-                                                <div class="container">
-                                                    <a href="category_edit.php?id=<?php echo $value['id']?>" type="button" class="btn btn-warning">Edit</a>
-                                                </div>
-                                                <div class="container">
-                                                    <a href="category_delete.php?id=<?php echo $value['id']?>"
-                                                       onclick="return confirm('Are you sure you want to delete this item')"
-                                                       type="button" class="btn btn-danger">Delete</a>
-                                                </div>
-                                            </div>
-                                        </td>
+                                        <?php
+                                        $productStmt = $pdo->prepare("SELECT * FROM products WHERE id=".$value['product_id']);
+                                        $productStmt->execute();
+                                        $productResult=$productStmt->fetchAll();
+                                        ?>
+                                        <td><?php echo escape($productResult[0]['name'])?></td>
+                                        <td><?php echo escape($productResult[0]['price'])?></td>
+                                        <td><?php echo escape($value['quantity'])?></td>
+                                        <td><?php echo escape(date('Y-m-d',strtotime($value['order_date'])))?></td>
                                     </tr>
                                     <?php
                                     $i++;
