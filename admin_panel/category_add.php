@@ -68,4 +68,4 @@ if ($_POST) {
     </div><!-- /.container-fluid -->
 </div>
 <!-- /.content -->
-<?php include('footer.html')?>
+<?php include('footer.php') ?>
