@@ -64,7 +64,7 @@ if ($_SESSION['role'] != 1) {
                             <?php
                             if ($result) {
                                 $i = 1;
-                                foreach ($result as $value) { ?>
+                                foreach ($result as $value) { echo $value['product_id']?>
                                     <tr>
                                         <td><?php echo $i;?></td>
                                         <?php

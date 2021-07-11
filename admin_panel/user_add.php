@@ -11,13 +11,19 @@ if ($_SESSION['role'] != 1) {
 }
 
 if ($_POST) {
-  if (empty($_POST['name']) || empty($_POST['email']) || empty($_POST['password']) || strlen($_POST['password']) < 4) {
+  if (empty($_POST['name']) || empty($_POST['email']) || empty($_POST['address']) || empty($_POST['phone']) || empty($_POST['password']) || strlen($_POST['password']) < 4) {
     if (empty($_POST['name'])) {
       $nameError = 'Name cannot be null';
     }
     if (empty($_POST['email'])) {
       $emailError = 'Email cannot be null';
     }
+      if (empty($_POST['address'])) {
+          $addrError = 'Address cannot be null';
+      }
+      if (empty($_POST['phone'])) {
+          $phError = 'Phone cannot be null';
+      }
     if (empty($_POST['password'])) {
       $passwordError = 'Password cannot be null';
     }
@@ -27,7 +33,9 @@ if ($_POST) {
   }else{
     $name = $_POST['name'];
     $email = $_POST['email'];
-    $password = password_hash($_POST['password'],PASSWORD_DEFAULT);
+      $address = $_POST['address'];
+      $phone = $_POST['phone'];
+      $password = password_hash($_POST['password'],PASSWORD_DEFAULT);
 
     if (empty($_POST['role'])) {
       $role = 0;
@@ -44,9 +52,9 @@ if ($_POST) {
     if ($user) {
       echo "<script>alert('Email duplicated')</script>";
     }else{
-      $stmt = $pdo->prepare("INSERT INTO users(name,email,password,role) VALUES (:name,:email,:password,:role)");
+      $stmt = $pdo->prepare("INSERT INTO users(name,email,address,phone,password,role) VALUES (:name,:email,:address,:phone,:password,:role)");
       $result = $stmt->execute(
-          array(':name'=>$name,':email'=>$email,':password'=>$password,':role'=>$role)
+          array(':name'=>$name,':email'=>$email,':address'=>$address,':phone'=>$phone,':password'=>$password,':role'=>$role)
       );
       if ($result) {
         echo "<script>alert('Successfully added');window.location.href='user_list.php';</script>";
@@ -77,6 +85,14 @@ if ($_POST) {
                     <label for="">Email</label><p style="color:red"><?php echo empty($emailError) ? '' : '*'.$emailError; ?></p>
                     <input type="email" class="form-control" name="email" value="">
                   </div>
+                    <div class="form-group">
+                        <label for="">Address</label><p style="color:red"><?php echo empty($addrError) ? '' : '*'.$addrError; ?></p>
+                        <input type="text" class="form-control" name="address" value="">
+                    </div>
+                    <div class="form-group">
+                        <label for="">Phone</label><p style="color:red"><?php echo empty($phError) ? '' : '*'.$phError; ?></p>
+                        <input type="number" class="form-control" name="phone" value="">
+                    </div>
                   <div class="form-group">
                     <label for="">Password</label><p style="color:red"><?php echo empty($passwordError) ? '' : '*'.$passwordError; ?></p>
                     <input type="password" name="password" class="form-control">

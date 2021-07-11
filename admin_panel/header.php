@@ -37,7 +37,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
         $page = end($link_array);
     ?>
 
-   <?php if ($page!='order_list.php'){ ?>
+    <?php
+        if($page=='index.php' || $page=='user_list.php' || $page=='category.php'){
+            if ($page!='order_list.php'){
+    ?>
        <form class="form-inline ml-3" method="post" action="
       <?php
        if ($page=='index.php'){
@@ -62,7 +65,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                </div>
            </div>
        </form>
-   <?php } ?>
+   <?php
+            }
+        }
+    ?>
 
 
   </nav>
