@@ -6,6 +6,10 @@ if (session_status()==PHP_SESSION_NONE){
     session_start();
 }
 
+if (empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])) {
+    header('Location: login.php');
+}
+
 
 
 if (!empty($_GET['pageno'])) {

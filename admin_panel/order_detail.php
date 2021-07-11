@@ -38,8 +38,8 @@ if ($_SESSION['role'] != 1) {
                     $rawResult = $stmt->fetchAll();
 
                     $total_pages = ceil(count($rawResult) / $numOfrecs);
-
-                    $stmt = $pdo->prepare("SELECT * FROM sale_orders_detail ORDER BY id LIMIT $offset,$numOfrecs");
+                    $sid = $_GET['sid'];
+                    $stmt = $pdo->prepare("SELECT * FROM sale_orders_detail WHERE sale_order_id=$sid ORDER BY id LIMIT $offset,$numOfrecs");
                     $stmt->execute();
                     $result = $stmt->fetchAll();
 

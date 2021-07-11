@@ -96,8 +96,8 @@
 		<div class="container">
 			<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
 				<div class="col-first">
-					<h1>Welcome</h1>
-
+					<h1>Welcome <?php echo escape($_SESSION['name'])?></h1>
+                    <a href="logout.php" class="btn bg-white text-danger font-weight-bold">Logout</a>
 				</div>
 			</div>
 		</div>

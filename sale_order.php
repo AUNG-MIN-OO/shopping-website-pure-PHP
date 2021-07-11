@@ -3,7 +3,11 @@ session_start();
 require 'config/common.php';
 require 'config/config.php';
 
-if ($_SESSION['cart']){
+if (empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])) {
+    header('Location: login.php');
+}
+
+if (!empty($_SESSION['cart'])){
     $user_id = $_SESSION['user_id'];
     $total = 0;
     foreach ($_SESSION['cart'] as $key => $qty) {
@@ -39,6 +43,7 @@ if ($_SESSION['cart']){
             );
         }
     }
+    unset($_SESSION['cart']);
 }
 
 ?>

@@ -18,10 +18,11 @@
                 $_SESSION['user_id']=$result['id'];
                 $_SESSION['name']=$result['name'];
                 $_SESSION['logged_in']=time();
+                header('Location: index.php');
+            }else{
+                echo "<script>alert('invalid credentials')</script>";
             }
         }
-
-        echo "<script>alert('invalid credentials')</script>";
     }
 ?>
 <!DOCTYPE html>
@@ -64,7 +65,7 @@
 			<nav class="navbar navbar-expand-lg navbar-light main_box">
                 <div class="container">
                     <!-- Brand and toggle get grouped for better mobile display -->
-                    <a class="navbar-brand logo_h" href="index.html"><h4>SHOP<h4></a>
+                    <a class="navbar-brand logo_h" href="index.php"><h4>SHOP<h4></a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="icon-bar"></span>
@@ -120,13 +121,13 @@
 				<div class="col-lg-6">
 					<div class="login_form_inner">
 						<h3>Log in to enter</h3>
-						<form class="row login_form" action="index.php" method="post" id="contactForm" novalidate="novalidate">
+						<form class="row login_form" action="login.php" method="post" id="contactForm" novalidate="novalidate">
                             <input name="_token" type="hidden" value="<?php echo $_SESSION['_token']; ?>">
                             <div class="col-md-12 form-group">
-								<input type="email" class="form-control" id="name" name="name" placeholder="Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'EMAIL'">
+								<input type="email" class="form-control" id="name" name="email" placeholder="Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'EMAIL'">
 							</div>
 							<div class="col-md-12 form-group">
-								<input type="password" class="form-control" id="name" name="name" placeholder="Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'">
+								<input type="password" class="form-control" id="name" name="password" placeholder="Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'">
 							</div>
 							<div class="col-md-12 form-group">
 								<button type="submit" value="submit" class="primary-btn">Log In</button>

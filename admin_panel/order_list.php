@@ -76,7 +76,7 @@ if ($_SESSION['role'] != 1) {
                                         <td><?php echo escape(substr($value['total_price'],0,50))?></td>
                                         <td><?php echo escape(date('Y-m-d',strtotime($value['order_date'])))?></td>
                                         <td>
-                                            <a href="order_detail.php?id=<?php echo $value['id']?>" type="button" class="btn btn-primary">View</a>
+                                            <a href="order_detail.php?sid=<?php echo $value['id']?>" type="button" class="btn btn-primary">View</a>
                                         </td>
                                     </tr>
                                     <?php
